@@ -35,7 +35,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 142 69% 58%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -111,7 +111,7 @@
   }
 
   .btn-outline {
-    @apply border-2 border-sayur-green text-sayur-green hover:bg-sayur-green hover:text-white transition-colors px-6 py-2 rounded-md font-medium;
+    @apply border-2 border-sayur-green text-sayur-green hover:bg-sayur-green hover:text-white transition-colors px-6 py-2.5 rounded-md font-medium;
   }
   
   .card-hover {
@@ -120,6 +120,37 @@
   
   .section-padding {
     @apply py-16 md:py-24;
+  }
+  
+  /* New Maritime Components */
+  .glassy-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/50 rounded-xl shadow-lg;
+  }
+  
+  .ocean-gradient {
+    @apply bg-gradient-to-b from-sayur-blue to-sayur-blue-light/70;
+  }
+  
+  .wave-divider {
+    @apply w-full overflow-hidden leading-[0] relative;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-sayur-blue to-sayur-green bg-clip-text text-transparent;
+  }
+  
+  .floating {
+    animation: floating 4s ease-in-out infinite;
+  }
+  
+  .water-ripple {
+    @apply relative overflow-hidden;
+  }
+  
+  .water-ripple::after {
+    content: "";
+    @apply absolute inset-0 bg-sayur-blue/10 opacity-0;
+    animation: ripple 10s linear infinite;
   }
 }
 
@@ -133,12 +164,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4CAF50;
+  background: #0EA5E9;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2E7D32;
+  background: #1976D2;
 }
 
 /* Font settings */
@@ -146,5 +177,48 @@
   html {
     font-family: 'Open Sans', system-ui, sans-serif;
     scroll-behavior: smooth;
+  }
+}
+
+/* Maritime Animations */
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes ripple {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+}
+
+@keyframes ocean-wave {
+  0%, 100% {
+    transform: translateX(-25%) translateY(-25%) rotate(0deg);
+  }
+  50% {
+    transform: translateX(-30%) translateY(-30%) rotate(180deg);
+  }
+}
+
+/* Additional keyframes for enhanced wave animations */
+@keyframes wave-motion {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 0%;
   }
 }
