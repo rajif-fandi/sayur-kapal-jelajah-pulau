@@ -20,7 +20,7 @@ const farmerStories = [
     id: 'f2',
     name: 'Ibu Siti',
     location: 'Pulau Tidung',
-    image: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
     excerpt: 'Generasi ketiga petani yang menggabungkan teknik tradisional dengan modern.',
     products: ['Tomat', 'Cabai', 'Terong']
   }
@@ -58,7 +58,7 @@ const FarmerStoriesSection = () => {
             <CardContent className="p-0">
               <div className="grid grid-cols-3 h-full">
                 <div className="col-span-1">
-                  <div className="h-full relative">
+                  <AspectRatio ratio={3/4} className="h-full">
                     <img 
                       src={story.image} 
                       alt={story.name}
@@ -69,7 +69,7 @@ const FarmerStoriesSection = () => {
                         {story.location}
                       </span>
                     </div>
-                  </div>
+                  </AspectRatio>
                 </div>
                 <div className="col-span-2 p-4 flex flex-col">
                   <h3 className="font-medium text-base mb-1">{story.name}</h3>

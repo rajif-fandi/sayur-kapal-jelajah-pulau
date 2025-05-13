@@ -27,7 +27,7 @@ const farmerStories = [
     id: 'f2',
     name: 'Ibu Siti',
     location: 'Pulau Tidung',
-    image: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
     excerpt: 'Generasi ketiga petani yang menggabungkan teknik tradisional dengan modern.',
     products: ['Tomat', 'Cabai', 'Terong']
   },
@@ -35,7 +35,7 @@ const farmerStories = [
     id: 'f3',
     name: 'Pak Ahmad',
     location: 'Pulau Harapan',
-    image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
     excerpt: 'Pelopor teknik hidroponik di pulau dengan sumber air terbatas.',
     products: ['Wortel', 'Brokoli', 'Sawi']
   },
@@ -43,7 +43,7 @@ const farmerStories = [
     id: 'f4',
     name: 'Bu Ani',
     location: 'Pulau Pramuka',
-    image: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
     excerpt: 'Pengembang kebun sayur komunal untuk ketahanan pangan pulau.',
     products: ['Selada Air', 'Kangkung', 'Bayam']
   }
@@ -70,12 +70,14 @@ const StoriesPage = () => {
           {/* Featured Story */}
           <Card className="mb-12 overflow-hidden border-0 shadow-lg bg-white/80 backdrop-blur-sm rounded-xl">
             <div className="grid md:grid-cols-2 gap-0">
-              <div className="h-64 md:h-auto relative overflow-hidden">
-                <img 
-                  src={farmerStories[0].image} 
-                  alt={farmerStories[0].name}
-                  className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
-                />
+              <div className="relative overflow-hidden">
+                <AspectRatio ratio={4/3}>
+                  <img 
+                    src={farmerStories[0].image} 
+                    alt={farmerStories[0].name}
+                    className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
+                  />
+                </AspectRatio>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 md:hidden">
                   <h3 className="text-xl font-medium text-white">{farmerStories[0].name}</h3>
                 </div>
@@ -130,7 +132,7 @@ const StoriesPage = () => {
                     <Card className="overflow-hidden border-0 shadow-md bg-white/90 backdrop-blur-sm h-full hover:shadow-lg transition-all duration-300">
                       <CardContent className="p-0">
                         <div className="relative">
-                          <AspectRatio ratio={16 / 9}>
+                          <AspectRatio ratio={4/3} className="bg-slate-50">
                             <img 
                               src={story.image} 
                               alt={story.name}

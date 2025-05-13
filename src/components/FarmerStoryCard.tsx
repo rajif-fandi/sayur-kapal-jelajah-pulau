@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, ArrowRight, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 interface FarmerStoryCardProps {
   id: string;
@@ -25,12 +26,14 @@ const FarmerStoryCard: React.FC<FarmerStoryCardProps> = ({
   return (
     <Card className="overflow-hidden border-0 shadow-md bg-white/90 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
       <div className="grid md:grid-cols-2 gap-0">
-        <div className="h-52 md:h-full overflow-hidden relative">
-          <img 
-            src={image} 
-            alt={name} 
-            className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
-          />
+        <div className="h-auto overflow-hidden relative">
+          <AspectRatio ratio={4/3} className="bg-slate-50">
+            <img 
+              src={image} 
+              alt={name} 
+              className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+            />
+          </AspectRatio>
           <div className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full flex items-center">
             <MapPin className="h-3 w-3 mr-1 text-sayur-blue" />
             <span className="text-xs text-sayur-blue-dark">{location}</span>
