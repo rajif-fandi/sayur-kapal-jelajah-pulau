@@ -2,7 +2,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Book, FileText, Gallery } from "lucide-react";
+import { Book, FileText, Image } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
@@ -159,7 +159,7 @@ const StoriesPage = () => {
                             ))}
                           </div>
                           <div className="flex items-center text-sayur-blue text-sm">
-                            <Gallery className="h-3 w-3 mr-1" />
+                            <Image className="h-3 w-3 mr-1" />
                             <span>Lihat galeri</span>
                           </div>
                         </div>
