@@ -19,7 +19,7 @@ const Footer = () => {
                   <path d="M4 16c1.39-1.86 5.23-1.75 10-1.97"/>
                 </svg>
               </div>
-              <span className="font-poppins font-bold text-xl">SayurNaikKapal</span>
+              <span className="font-poppins font-bold text-xl">GreenWave Cargo</span>
             </Link>
             <p className="mt-4 text-gray-200">
               Menghubungkan petani pulau dengan masyarakat kota melalui distribusi sayuran segar berkualitas menggunakan transportasi kapal.
@@ -83,7 +83,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={20} />
-                <span>info@sayurnaikkapal.com</span>
+                <span>info@greenwavecargo.com</span>
               </li>
             </ul>
           </div>
@@ -112,7 +112,7 @@ const Footer = () => {
         
         <div className="border-t border-gray-600 mt-12 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p>&copy; 2025 SayurNaikKapal. Hak Cipta Dilindungi.</p>
+            <p>&copy; 2025 GreenWave Cargo. Hak Cipta Dilindungi.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link to="/kebijakan-privasi" className="text-sm hover:text-sayur-blue transition-colors">
                 Kebijakan Privasi

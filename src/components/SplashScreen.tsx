@@ -58,7 +58,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
           </div>
         </div>
         
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-sayur-blue via-sayur-blue-dark to-sayur-green bg-clip-text text-transparent">SayurNaikKapal</h1>
+        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-sayur-blue via-sayur-blue-dark to-sayur-green bg-clip-text text-transparent">GreenWave Cargo</h1>
         <p className="text-gray-600 mb-8">Distribusi sayur dari pulau ke kota</p>
         
         <div className="relative w-64 h-3 bg-white/50 backdrop-blur-sm rounded-full overflow-hidden border border-white/50 shadow-inner">

@@ -21,7 +21,7 @@ const Navbar = () => {
                 <path d="M4 16c1.39-1.86 5.23-1.75 10-1.97"/>
               </svg>
             </div>
-            <span className="font-poppins font-bold text-xl text-sayur-green">SayurNaikKapal</span>
+            <span className="font-poppins font-bold text-xl text-sayur-green">GreenWave Cargo</span>
           </Link>
           
           {/* Desktop Navigation */}
