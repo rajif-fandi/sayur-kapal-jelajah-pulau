@@ -1,14 +1,16 @@
-
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Ship, Leaf, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Heart, ShoppingCart, Star, Filter, Users } from "lucide-react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useToast } from "@/components/ui/use-toast";
+import ProductCard from "@/components/ProductCard";
 
 const categories = [
   "Semua",
@@ -119,9 +121,9 @@ const products = [
 
 const ProductPage = () => {
   const { toast } = useToast();
-  const [selectedCategory, setSelectedCategory] = React.useState("Semua");
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("popularity");
+  const [selectedCategory, setSelectedCategory] = useState("Semua");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("popularity");
   
   const filteredProducts = products.filter(product => 
     (selectedCategory === "Semua" || product.category === selectedCategory) &&
@@ -186,7 +188,7 @@ const ProductPage = () => {
                 {/* Search */}
                 <div className="mb-6">
                   <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
-                  <input 
+                  <Input 
                     type="text" 
                     id="search" 
                     placeholder="Cari sayuran..." 
@@ -257,55 +259,7 @@ const ProductPage = () => {
               {sortedProducts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {sortedProducts.map((product) => (
-                    <Card key={product.id} className="h-full hover:shadow-md transition-shadow overflow-hidden">
-                      <div className="relative">
-                        <AspectRatio ratio={4/3}>
-                          <img 
-                            src={product.image} 
-                            alt={product.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </AspectRatio>
-                        <div className="absolute top-2 right-2">
-                          <Badge className="bg-sayur-green">{product.category}</Badge>
-                        </div>
-                      </div>
-                      
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <h3 className="font-medium">{product.name}</h3>
-                          <div className="flex items-center text-amber-500 text-sm">
-                            <span>★</span>
-                            <span className="ml-1">{product.rating}</span>
-                          </div>
-                        </div>
-                        
-                        <p className="text-gray-600 text-sm mb-3">
-                          {product.description.substring(0, 60)}...
-                        </p>
-                        
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sayur-green font-bold">
-                            Rp{product.price.toLocaleString()}
-                            <span className="text-gray-500 font-normal text-xs">/{product.unit}</span>
-                          </span>
-                          <span className="text-xs text-gray-500">Stok: {product.stock}</span>
-                        </div>
-                        
-                        <div className="flex items-center text-xs text-gray-500 mb-4">
-                          <Ship className="h-3 w-3 mr-1" />
-                          <span>Dari {product.origin}</span>
-                        </div>
-                        
-                        <Button 
-                          className="w-full bg-sayur-green hover:bg-sayur-green-dark"
-                          onClick={() => handleAddToCart(product.id, product.name)}
-                        >
-                          <ShoppingCart className="mr-2 h-4 w-4" />
-                          Tambah ke Keranjang
-                        </Button>
-                      </CardContent>
-                    </Card>
+                    <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
               ) : (

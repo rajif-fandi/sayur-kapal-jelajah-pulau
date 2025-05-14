@@ -2,7 +2,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Ship, Anchor, Map, Users } from "lucide-react";
+import { Ship, Anchor, Map, Users, Mail, Phone } from "lucide-react";
 import { 
   Tabs, 
   TabsContent, 

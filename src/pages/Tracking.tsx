@@ -1,519 +1,358 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import LeafletMap from "@/components/LeafletMap";
 import ShipTracker from "@/components/ShipTracker";
+import LeafletMap from "@/components/LeafletMap";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { 
-  Navigation, 
-  Ship, 
-  Calendar, 
-  Clock, 
-  MapPin, 
-  Package,
-  Search
-} from "lucide-react";
-import { toast } from "sonner";
-
-// Sample ship data
-const ships = [
-  {
-    id: "ship-01",
-    name: "GW Serayu",
-    route: "Pulau Pari - Jakarta",
-    status: "Berlayar",
-    departure: "07:30 WIB",
-    arrival: "10:15 WIB",
-    progress: 65,
-    lastUpdated: "08:45 WIB",
-    capacity: "80%",
-    type: "Medium Vessel",
-    products: ["Bayam", "Kangkung", "Terong", "Tomat", "Cabai"]
-  },
-  {
-    id: "ship-02",
-    name: "GW Barito",
-    route: "Pulau Tidung - Jakarta",
-    status: "Bersandar",
-    departure: "13:00 WIB",
-    arrival: "15:45 WIB",
-    progress: 0,
-    lastUpdated: "12:30 WIB",
-    capacity: "70%",
-    type: "Small Vessel",
-    products: ["Wortel", "Kentang", "Selada", "Bayam"]
-  },
-  {
-    id: "ship-03",
-    name: "GW Citarum",
-    route: "Jakarta - Pulau Pramuka",
-    status: "Berlayar",
-    departure: "06:15 WIB",
-    arrival: "09:00 WIB",
-    progress: 85,
-    lastUpdated: "08:30 WIB",
-    capacity: "90%",
-    type: "Large Vessel",
-    products: ["Sarana Tanam", "Bibit", "Pupuk Organik"]
-  },
-  {
-    id: "ship-04",
-    name: "GW Mahakam",
-    route: "Pulau Harapan - Jakarta",
-    status: "Persiapan",
-    departure: "14:30 WIB",
-    arrival: "17:15 WIB",
-    progress: 0,
-    lastUpdated: "14:00 WIB",
-    capacity: "40%",
-    type: "Medium Vessel",
-    products: ["Sawi", "Selada Air", "Cabai", "Tomat"]
-  }
-];
-
-// Sample schedule data
-const schedules = [
-  {
-    day: "Senin",
-    routes: [
-      { from: "Pulau Pari", to: "Jakarta", departure: "07:30", arrival: "10:15", ship: "GW Serayu" },
-      { from: "Jakarta", to: "Pulau Pramuka", departure: "11:30", arrival: "14:15", ship: "GW Citarum" },
-      { from: "Pulau Tidung", to: "Jakarta", departure: "15:30", arrival: "18:15", ship: "GW Barito" }
-    ]
-  },
-  {
-    day: "Selasa",
-    routes: [
-      { from: "Pulau Harapan", to: "Jakarta", departure: "07:00", arrival: "09:45", ship: "GW Mahakam" },
-      { from: "Jakarta", to: "Pulau Tidung", departure: "11:00", arrival: "13:45", ship: "GW Barito" },
-      { from: "Pulau Pramuka", to: "Jakarta", departure: "15:00", arrival: "17:45", ship: "GW Citarum" }
-    ]
-  },
-  {
-    day: "Rabu",
-    routes: [
-      { from: "Pulau Pari", to: "Jakarta", departure: "07:30", arrival: "10:15", ship: "GW Serayu" },
-      { from: "Jakarta", to: "Pulau Harapan", departure: "12:30", arrival: "15:15", ship: "GW Mahakam" },
-      { from: "Pulau Tidung", to: "Jakarta", departure: "16:00", arrival: "18:45", ship: "GW Barito" }
-    ]
-  },
-  {
-    day: "Kamis",
-    routes: [
-      { from: "Pulau Pramuka", to: "Jakarta", departure: "07:15", arrival: "10:00", ship: "GW Citarum" },
-      { from: "Jakarta", to: "Pulau Pari", departure: "11:15", arrival: "14:00", ship: "GW Serayu" },
-      { from: "Pulau Harapan", to: "Jakarta", departure: "15:15", arrival: "18:00", ship: "GW Mahakam" }
-    ]
-  },
-  {
-    day: "Jumat",
-    routes: [
-      { from: "Pulau Tidung", to: "Jakarta", departure: "07:45", arrival: "10:30", ship: "GW Barito" },
-      { from: "Jakarta", to: "Pulau Pramuka", departure: "11:45", arrival: "14:30", ship: "GW Citarum" },
-      { from: "Pulau Pari", to: "Jakarta", departure: "15:45", arrival: "18:30", ship: "GW Serayu" }
-    ]
-  },
-  {
-    day: "Sabtu",
-    routes: [
-      { from: "Pulau Harapan", to: "Jakarta", departure: "08:00", arrival: "10:45", ship: "GW Mahakam" },
-      { from: "Jakarta", to: "Pulau Tidung", departure: "12:00", arrival: "14:45", ship: "GW Barito" },
-      { from: "Pulau Pramuka", to: "Jakarta", departure: "16:00", arrival: "18:45", ship: "GW Citarum" }
-    ]
-  },
-  {
-    day: "Minggu",
-    routes: [
-      { from: "Pulau Pari", to: "Jakarta", departure: "09:30", arrival: "12:15", ship: "GW Serayu" },
-      { from: "Jakarta", to: "Pulau Harapan", departure: "13:30", arrival: "16:15", ship: "GW Mahakam" }
-    ]
-  }
-];
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Anchor, Ship, Package, Calendar, Clock, Navigation, MapPin, AlertTriangle } from "lucide-react";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
+import { useToast } from "@/components/ui/use-toast";
 
 const TrackingPage = () => {
-  const [selectedShip, setSelectedShip] = useState(ships[0]);
-  const [trackingQuery, setTrackingQuery] = useState("");
-  
-  const handleTrackShipment = () => {
-    if (trackingQuery.trim() === "") {
-      toast.error("Masukkan nomor resi pengiriman");
-      return;
-    }
-    
-    toast.success("Melacak pengiriman: " + trackingQuery);
-    // In a real app, we would fetch tracking data based on the tracking number
-    setTrackingQuery("");
+  const [ships, setShips] = useState([
+    {
+      id: "ship-1",
+      name: "Eliana",
+      location: [3.9215, 107.9933],
+      cargo: "Sayuran Segar",
+      status: "Berangkat",
+      delay: false,
+      delayReason: null,
+      origin: "Pulau Sedanau",
+      destination: "Jakarta",
+      departureTime: "2024-07-15T08:00:00",
+      arrivalTime: "2024-07-17T17:00:00",
+      journeyHistory: [
+        { timestamp: "2024-07-15T08:00:00", status: "Berangkat", location: "Pulau Sedanau" },
+        { timestamp: "2024-07-15T14:00:00", status: "Checkpoint", location: "Selat Karimata" },
+        { timestamp: "2024-07-16T02:00:00", status: "Checkpoint", location: "Laut Jawa" },
+        { timestamp: "2024-07-16T18:00:00", status: "Checkpoint", location: "Dekat Cirebon" },
+      ],
+    },
+    {
+      id: "ship-2",
+      name: "Nusantara Jaya",
+      location: [-6.2088, 106.8456],
+      cargo: "Buah-buahan",
+      status: "Tiba",
+      delay: false,
+      delayReason: null,
+      origin: "Pontianak",
+      destination: "Jakarta",
+      departureTime: "2024-07-12T10:00:00",
+      arrivalTime: "2024-07-14T20:00:00",
+      journeyHistory: [
+        { timestamp: "2024-07-12T10:00:00", status: "Berangkat", location: "Pontianak" },
+        { timestamp: "2024-07-12T20:00:00", status: "Checkpoint", location: "Laut Natuna" },
+        { timestamp: "2024-07-13T14:00:00", status: "Checkpoint", location: "Selat Karimata" },
+        { timestamp: "2024-07-14T08:00:00", status: "Checkpoint", location: "Laut Jawa" },
+        { timestamp: "2024-07-14T20:00:00", status: "Tiba", location: "Jakarta" },
+      ],
+    },
+    {
+      id: "ship-3",
+      name: "Bahari Makmur",
+      location: [-2.5333, 118.0167],
+      cargo: "Produk Olahan",
+      status: "Jadwal",
+      delay: true,
+      delayReason: "Cuaca buruk di sekitar Selat Makassar",
+      origin: "Balikpapan",
+      destination: "Surabaya",
+      departureTime: "2024-07-18T14:00:00",
+      arrivalTime: "2024-07-20T06:00:00",
+      journeyHistory: [
+        { timestamp: "2024-07-18T14:00:00", status: "Berangkat", location: "Balikpapan" },
+        { timestamp: "2024-07-19T00:00:00", status: "Checkpoint", location: "Selat Makassar" },
+        { timestamp: "2024-07-19T12:00:00", status: "Tertunda", location: "Dekat Pare-Pare" },
+      ],
+    },
+  ]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedShipId, setSelectedShipId] = useState(null);
+  const selectedShip = ships.find((ship) => ship.id === selectedShipId);
+  const { toast } = useToast();
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
-  
+
+  const handleSelectShip = (shipId) => {
+    setSelectedShipId(shipId);
+  };
+
+  const filteredShips = ships.filter((ship) =>
+    ship.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="flex-1 bg-gradient-to-b from-white to-slate-50">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-sayur-blue-light/30 to-sayur-blue/20 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <div className="mb-6 mx-auto w-20 h-20 rounded-full bg-sayur-blue/10 flex items-center justify-center">
-                <Navigation className="h-10 w-10 text-sayur-blue" />
-              </div>
-              <h1 className="text-4xl font-bold mb-4 text-sayur-blue">Pelacakan Kapal</h1>
-              <p className="text-gray-700 text-lg mb-8">
-                Pantau lokasi kapal dan status pengiriman sayuran Anda secara real-time dari pulau ke kota.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row items-center gap-3 bg-white p-4 rounded-xl shadow-sm max-w-xl mx-auto">
-                <Input 
-                  type="text" 
-                  placeholder="Masukkan nomor resi pengiriman" 
-                  className="flex-1"
-                  value={trackingQuery}
-                  onChange={(e) => setTrackingQuery(e.target.value)}
-                />
-                <Button className="bg-sayur-blue hover:bg-sayur-blue-dark" onClick={handleTrackShipment}>
-                  <Search className="mr-2 h-4 w-4" />
-                  Lacak Pengiriman
-                </Button>
-              </div>
-            </div>
-          </div>
+        <div className="text-center max-w-3xl mx-auto pt-12 mb-8">
+          <h1 className="text-4xl font-bold mb-4 text-gradient-to-r from-sayur-blue to-sayur-green">
+            Lacak Pengirimanmu
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Pantau pergerakan kapal pengangkut sayuranmu secara realtime.
+          </p>
         </div>
         
-        {/* Tracking Content */}
-        <div className="container mx-auto px-4 py-16">
-          <Tabs defaultValue="map" className="w-full">
-            <TabsList className="grid w-full md:w-fit grid-cols-3 mb-8">
-              <TabsTrigger value="map">Peta Kapal</TabsTrigger>
-              <TabsTrigger value="schedule">Jadwal Kapal</TabsTrigger>
-              <TabsTrigger value="shipments">Info Pengiriman</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="map">
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                {/* Ship List */}
-                <div className="lg:col-span-1">
-                  <h2 className="text-xl font-semibold mb-4">Armada Kapal</h2>
-                  <div className="space-y-3 overflow-y-auto max-h-[600px] pr-2">
-                    {ships.map(ship => (
-                      <Card 
-                        key={ship.id} 
-                        className={`cursor-pointer hover:bg-gray-50 transition-colors ${selectedShip.id === ship.id ? 'border-sayur-blue ring-2 ring-sayur-blue/20' : ''}`}
-                        onClick={() => setSelectedShip(ship)}
-                      >
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h3 className="font-medium">{ship.name}</h3>
-                              <p className="text-sm text-gray-600">{ship.route}</p>
-                            </div>
-                            <Badge className={
-                              ship.status === "Berlayar" ? "bg-green-500" : 
-                              ship.status === "Bersandar" ? "bg-blue-500" : 
-                              "bg-amber-500"
-                            }>
-                              {ship.status}
-                            </Badge>
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column - Search and Ship List */}
+            <div className="lg:col-span-1 space-y-6">
+              {/* Search Panel */}
+              <div className="bg-white rounded-xl shadow-sm p-5">
+                <div className="flex items-center space-x-2 mb-4">
+                  <Navigation className="w-5 h-5 text-gray-500" />
+                  <h2 className="text-xl font-semibold">Cari Kapal</h2>
+                </div>
+                <Input
+                  type="text"
+                  placeholder="Cari nama kapal..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+                <p className="text-sm text-gray-500 mt-2">
+                  Masukkan nama kapal untuk mencari informasi pengiriman.
+                </p>
+              </div>
+              
+              {/* Ship List */}
+              <div className="bg-white rounded-xl shadow-sm p-5">
+                <h2 className="text-xl font-semibold mb-4 flex items-center">
+                  <Anchor className="w-5 h-5 mr-2 text-sayur-blue" />
+                  Kapal Aktif
+                </h2>
+                
+                <ScrollArea className="h-[400px] pr-4">
+                  {filteredShips.length > 0 ? (
+                    filteredShips.map((ship) => (
+                      <Card key={ship.id} className="mb-3">
+                        <CardContent className="flex items-center justify-between p-3">
+                          <div>
+                            <h3 className="font-medium">{ship.name}</h3>
+                            <p className="text-sm text-gray-500">{ship.cargo}</p>
                           </div>
-                          
-                          <div className="mt-3">
-                            <div className="flex justify-between text-xs text-gray-500 mb-1">
-                              <span>{ship.departure}</span>
-                              <span>{ship.arrival}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-sayur-blue h-2 rounded-full" 
-                                style={{ width: `${ship.progress}%` }}
-                              ></div>
-                            </div>
-                          </div>
+                          <Badge variant="secondary">{ship.status}</Badge>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleSelectShip(ship.id)}
+                          >
+                            Lihat Detail
+                          </Button>
                         </CardContent>
                       </Card>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Map and Ship Detail */}
-                <div className="lg:col-span-3">
-                  <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
-                    <div className="flex flex-col md:flex-row justify-between md:items-center mb-4">
-                      <div>
-                        <h2 className="text-xl font-semibold">{selectedShip.name}</h2>
-                        <p className="text-gray-600">{selectedShip.route}</p>
-                      </div>
-                      <div className="flex items-center gap-4 mt-2 md:mt-0">
-                        <div>
-                          <p className="text-xs text-gray-500">Terakhir diperbarui</p>
-                          <p className="font-medium">{selectedShip.lastUpdated}</p>
-                        </div>
-                        <Button size="sm" variant="outline" className="border-sayur-blue text-sayur-blue">
-                          Segarkan
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-3 gap-4 mb-6">
-                      <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <p className="text-xs text-gray-500 mb-1">Jenis Kapal</p>
-                        <p className="font-medium">{selectedShip.type}</p>
-                      </div>
-                      <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <p className="text-xs text-gray-500 mb-1">Kapasitas Terisi</p>
-                        <p className="font-medium">{selectedShip.capacity}</p>
-                      </div>
-                      <div className="text-center p-3 bg-gray-50 rounded-lg">
-                        <p className="text-xs text-gray-500 mb-1">Status</p>
-                        <p className="font-medium">{selectedShip.status}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="mb-6">
-                      <h3 className="text-sm font-medium mb-2">Muatan Produk</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedShip.products.map((product, index) => (
-                          <Badge key={index} variant="outline" className="bg-sayur-green/10 text-sayur-green border-sayur-green/20">
-                            {product}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="h-[400px] rounded-xl overflow-hidden shadow-sm">
-                    <LeafletMap />
-                  </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">Tidak ada kapal ditemukan.</p>
+                  )}
+                </ScrollArea>
+              </div>
+            </div>
+            
+            {/* Right Column - Map and Details */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Map */}
+              <div className="bg-white rounded-xl shadow-sm p-5">
+                <div className="h-[400px] w-full rounded-lg overflow-hidden relative">
+                  <LeafletMap 
+                    ships={ships} 
+                    selectedShipId={selectedShipId}
+                    onSelectShip={handleSelectShip}
+                  />
                 </div>
               </div>
-            </TabsContent>
-            
-            <TabsContent value="schedule">
-              <div className="bg-white rounded-xl shadow-sm p-6">
-                <h2 className="text-2xl font-semibold mb-6">Jadwal Kapal Mingguan</h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
-                  {schedules.map((day, idx) => (
-                    <Card key={idx} className="h-full">
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-center text-sayur-blue">{day.day}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        {day.routes.map((route, ridx) => (
-                          <div key={ridx} className="p-2 bg-gray-50 rounded-lg text-sm">
-                            <div className="flex items-center gap-1 mb-1">
-                              <Ship className="h-3 w-3 text-sayur-green" />
-                              <span className="font-medium">{route.ship}</span>
-                            </div>
-                            <div className="flex items-center justify-between mb-1 text-xs">
-                              <div className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1 text-gray-500" />
-                                <span>{route.departure}</span>
-                              </div>
-                              <div className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1 text-gray-500" />
-                                <span>{route.arrival}</span>
-                              </div>
-                            </div>
-                            <div className="flex items-center justify-between text-xs">
-                              <div className="flex items-center">
-                                <MapPin className="h-3 w-3 mr-1 text-gray-500" />
-                                <span>{route.from}</span>
-                              </div>
-                              <span>→</span>
-                              <div className="flex items-center">
-                                <MapPin className="h-3 w-3 mr-1 text-gray-500" />
-                                <span>{route.to}</span>
-                              </div>
-                            </div>
+              
+              {/* Details */}
+              {selectedShip && (
+                <div className="bg-white rounded-xl shadow-sm">
+                  <Tabs defaultValue="info" className="w-full">
+                    <TabsList className="w-full grid grid-cols-3 p-0 h-auto">
+                      <TabsTrigger value="info" className="py-3 rounded-none rounded-tl-xl data-[state=active]:bg-sayur-blue-light/20">Info Kapal</TabsTrigger>
+                      <TabsTrigger value="cargo" className="py-3 rounded-none data-[state=active]:bg-sayur-green-light/20">Muatan</TabsTrigger>
+                      <TabsTrigger value="route" className="py-3 rounded-none rounded-tr-xl data-[state=active]:bg-sayur-earth-light/20">Rute</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="info" className="p-5">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-4">
+                          <Ship className="h-6 w-6 text-sayur-blue" />
+                          <h3 className="text-xl font-semibold">
+                            {selectedShip.name}
+                          </h3>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <h4 className="font-medium text-gray-500">Asal</h4>
+                            <p className="font-semibold">{selectedShip.origin}</p>
                           </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-                
-                <div className="mt-8 p-4 border border-dashed rounded-lg bg-gray-50">
-                  <h3 className="font-medium mb-2">Catatan Jadwal:</h3>
-                  <ul className="space-y-1 text-sm text-gray-600 list-disc list-inside">
-                    <li>Jadwal dapat berubah tanpa pemberitahuan tergantung kondisi cuaca</li>
-                    <li>Keberangkatan akan ditunda jika cuaca buruk atau gelombang tinggi</li>
-                    <li>Kapasitas dapat berubah tergantung musim panen</li>
-                    <li>Silakan periksa status kapal secara real-time melalui fitur pelacakan</li>
-                  </ul>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="shipments">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="md:col-span-2">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Status Pengiriman Terkini</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                      <div className="border-b">
-                        <div className="grid grid-cols-4 p-3 text-sm font-medium text-gray-500 bg-gray-50">
-                          <div>Nomor Resi</div>
-                          <div>Produk</div>
-                          <div>Tanggal</div>
-                          <div>Status</div>
+                          <div>
+                            <h4 className="font-medium text-gray-500">Tujuan</h4>
+                            <p className="font-semibold">{selectedShip.destination}</p>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-500">Status</h4>
+                            <p className="font-semibold">{selectedShip.status}</p>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-500">Muatan</h4>
+                            <p className="font-semibold">{selectedShip.cargo}</p>
+                          </div>
                         </div>
-                      </div>
-                      
-                      {[
-                        { 
-                          id: "TRK0012345", 
-                          products: "Bayam, Kangkung, Selada", 
-                          date: "14 Mei 2025", 
-                          status: "Dikirim" 
-                        },
-                        { 
-                          id: "TRK0012344", 
-                          products: "Tomat, Wortel, Kentang", 
-                          date: "13 Mei 2025", 
-                          status: "Tiba" 
-                        },
-                        { 
-                          id: "TRK0012343", 
-                          products: "Bayam, Sawi", 
-                          date: "12 Mei 2025", 
-                          status: "Tiba" 
-                        },
-                        { 
-                          id: "TRK0012342", 
-                          products: "Cabai, Terong, Tomat", 
-                          date: "10 Mei 2025", 
-                          status: "Tiba" 
-                        },
-                        { 
-                          id: "TRK0012341", 
-                          products: "Wortel, Kentang", 
-                          date: "9 Mei 2025", 
-                          status: "Tiba" 
-                        }
-                      ].map((shipment, idx) => (
-                        <div key={idx} className="border-b">
-                          <div className="grid grid-cols-4 p-3 text-sm hover:bg-gray-50 cursor-pointer">
-                            <div className="font-medium text-sayur-blue">{shipment.id}</div>
-                            <div>{shipment.products}</div>
-                            <div>{shipment.date}</div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <h4 className="font-medium text-gray-500">Waktu Keberangkatan</h4>
+                            <p className="font-semibold">
+                              {format(new Date(selectedShip.departureTime), "d MMMM yyyy, HH:mm", { locale: id })}
+                            </p>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-500">Estimasi Tiba</h4>
+                            <p className="font-semibold">
+                              {format(new Date(selectedShip.arrivalTime), "d MMMM yyyy, HH:mm", { locale: id })}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {selectedShip.delay && (
+                          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start mt-4">
+                            <AlertTriangle className="h-5 w-5 text-amber-500 mr-2 flex-shrink-0 mt-0.5" />
                             <div>
-                              <Badge className={
-                                shipment.status === "Dikirim" ? "bg-amber-500" : 
-                                shipment.status === "Tiba" ? "bg-green-500" : 
-                                "bg-gray-500"
-                              }>
-                                {shipment.status}
-                              </Badge>
+                              <p className="font-medium text-amber-800">Keterlambatan Terdeteksi</p>
+                              <p className="text-sm text-amber-700">
+                                {selectedShip.delayReason || "Terjadi keterlambatan karena kondisi cuaca."}
+                              </p>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                  
-                  <ShipTracker className="mt-8" />
-                </div>
-                
-                <div>
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Informasi Pengiriman</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      <div>
-                        <h3 className="text-sm font-medium mb-3">Lacak Pengiriman</h3>
-                        <div className="flex gap-2">
-                          <Input 
-                            placeholder="Nomor resi pengiriman" 
-                            className="flex-1"
-                            value={trackingQuery}
-                            onChange={(e) => setTrackingQuery(e.target.value)}
-                          />
-                          <Button size="icon" onClick={handleTrackShipment}>
-                            <Search className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        )}
                       </div>
-                      
-                      <div className="p-4 bg-gray-50 rounded-lg space-y-4">
-                        <div className="flex items-start gap-3">
-                          <div className="min-w-8 mt-1">
-                            <Package className="h-6 w-6 text-sayur-blue" />
+                    </TabsContent>
+                    
+                    <TabsContent value="cargo" className="p-5">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-4">
+                          <Package className="h-6 w-6 text-sayur-green" />
+                          <h3 className="text-xl font-semibold">Detail Muatan</h3>
+                        </div>
+                        
+                        <Card className="mb-3">
+                          <CardContent className="flex items-center justify-between p-3">
+                            <div>
+                              <h3 className="font-medium">Jenis Muatan</h3>
+                              <p className="text-sm text-gray-500">{selectedShip.cargo}</p>
+                            </div>
+                            <Badge variant="outline">Segar</Badge>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card className="mb-3">
+                          <CardContent className="flex items-center justify-between p-3">
+                            <div>
+                              <h3 className="font-medium">Penanganan</h3>
+                              <p className="text-sm text-gray-500">
+                                Perlu penanganan khusus untuk menjaga kesegaran.
+                              </p>
+                            </div>
+                            <Badge variant="outline">Prioritas</Badge>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card className="mb-3">
+                          <CardContent className="flex items-center justify-between p-3">
+                            <div>
+                              <h3 className="font-medium">Catatan Tambahan</h3>
+                              <p className="text-sm text-gray-500">
+                                Hindari paparan langsung terhadap sinar matahari.
+                              </p>
+                            </div>
+                            <Calendar className="h-5 w-5 text-gray-400" />
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="route" className="p-5">
+                      <div className="space-y-5">
+                        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-500">Asal</h3>
+                            <p className="font-semibold text-lg flex items-center">
+                              <MapPin className="h-5 w-5 mr-1 text-sayur-red" />
+                              {selectedShip.origin}
+                            </p>
                           </div>
-                          <div>
-                            <h3 className="font-medium mb-1">Paket Standard</h3>
-                            <p className="text-sm text-gray-600">
-                              Pengiriman sayuran dari pulau ke kota dengan kapal reguler. 
-                              Estimasi waktu 6-8 jam tergantung kondisi cuaca.
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-500">Tujuan</h3>
+                            <p className="font-semibold text-lg flex items-center">
+                              <MapPin className="h-5 w-5 mr-1 text-sayur-green" />
+                              {selectedShip.destination}
                             </p>
                           </div>
                         </div>
                         
-                        <div className="flex items-start gap-3">
-                          <div className="min-w-8 mt-1">
-                            <Ship className="h-6 w-6 text-sayur-green" />
-                          </div>
-                          <div>
-                            <h3 className="font-medium mb-1">Paket Express</h3>
-                            <p className="text-sm text-gray-600">
-                              Pengiriman dengan kapal cepat, prioritas bongkar muat. 
-                              Estimasi waktu 3-4 jam untuk jarak yang sama.
-                            </p>
-                          </div>
-                        </div>
+                        <hr className="my-4" />
                         
-                        <div className="flex items-start gap-3">
-                          <div className="min-w-8 mt-1">
-                            <Calendar className="h-6 w-6 text-sayur-earth" />
+                        <div className="space-y-4">
+                          <h3 className="font-medium">Riwayat Perjalanan</h3>
+                          
+                          <div className="relative pl-8">
+                            <div className="absolute left-3 top-1 bottom-0 w-0.5 bg-gray-200" />
+                            
+                            {selectedShip.journeyHistory.map((event, i) => (
+                              <div key={i} className="mb-6 relative">
+                                <div className="absolute left-[-30px] top-0 w-6 h-6 rounded-full bg-white border-2 border-sayur-blue flex items-center justify-center">
+                                  {i === 0 ? (
+                                    <div className="w-2 h-2 bg-sayur-blue rounded-full" />
+                                  ) : null}
+                                </div>
+                                <p className="text-xs text-gray-500">
+                                  {format(new Date(event.timestamp), "d MMMM yyyy, HH:mm", { locale: id })}
+                                </p>
+                                <p className="font-medium">{event.status}</p>
+                                <p className="text-gray-600 text-sm">{event.location}</p>
+                              </div>
+                            ))}
                           </div>
-                          <div>
-                            <h3 className="font-medium mb-1">Berlangganan</h3>
-                            <p className="text-sm text-gray-600">
-                              Pengiriman rutin mingguan dengan jadwal tetap dan 
-                              jaminan ketersediaan produk.
-                            </p>
-                          </div>
+                          
+                          {selectedShip.delay ? (
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start mt-4">
+                              <AlertTriangle className="h-5 w-5 text-amber-500 mr-2 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <p className="font-medium text-amber-800">Keterlambatan Terdeteksi</p>
+                                <p className="text-sm text-amber-700">
+                                  {selectedShip.delayReason || "Terjadi keterlambatan karena kondisi cuaca."}
+                                </p>
+                              </div>
+                            </div>
+                          ) : null}
                         </div>
                       </div>
-                      
-                      <div className="p-4 border border-dashed rounded-lg">
-                        <h3 className="font-medium mb-3">Butuh Bantuan?</h3>
-                        <p className="text-sm text-gray-600 mb-4">
-                          Tim layanan pelanggan kami siap membantu Anda dengan pertanyaan seputar pengiriman.
-                        </p>
-                        <Button className="w-full bg-sayur-blue hover:bg-sayur-blue-dark">
-                          Hubungi Layanan Pelanggan
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                    </TabsContent>
+                  </Tabs>
                 </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-        
-        {/* Call to Action */}
-        <div className="bg-gradient-to-r from-sayur-blue/10 to-sayur-green/10 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-2xl font-bold mb-4">Jaga Kesegaran dengan GreenWave Cargo</h2>
-              <p className="text-gray-700 mb-8">
-                Dapatkan sayuran segar dari pulau ke rumah Anda dalam kondisi terbaik.
-                Lacak kapal kami secara real-time dan ketahui kapan tepatnya sayuran Anda akan tiba.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button className="bg-sayur-green hover:bg-sayur-green-dark">Belanja Sekarang</Button>
-                <Button variant="outline" className="border-sayur-blue text-sayur-blue hover:bg-sayur-blue hover:text-white">
-                  Berlangganan
-                </Button>
-              </div>
+              )}
+              
+              {!selectedShip && (
+                <div className="bg-white rounded-xl shadow-sm p-8 text-center">
+                  <Ship className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+                  <h3 className="text-xl font-medium text-gray-600">Pilih Kapal untuk Melihat Detail</h3>
+                  <p className="text-gray-500 mt-2">
+                    Klik pada salah satu kapal di peta atau daftar untuk melihat informasi lengkap.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
