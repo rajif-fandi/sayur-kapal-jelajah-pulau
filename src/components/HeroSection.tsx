@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Ship, Waves, Harvest } from "lucide-react";
+import { Ship, Waves, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -75,7 +75,7 @@ const HeroSection = () => {
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <div className="glassy-container p-6 rounded-xl bg-white/20 backdrop-blur-md border border-white/40 shadow-lg text-white">
                   <div className="mb-2 mx-auto bg-white/20 rounded-full p-3 w-16 h-16 flex items-center justify-center backdrop-blur-sm">
-                    <Harvest className="h-8 w-8" />
+                    <Leaf className="h-8 w-8" />
                   </div>
                   <p className="text-xl font-medium">Peta Interaktif</p>
                   <p className="text-sm opacity-80">Pelacakan kapal distribusi sayur</p>
