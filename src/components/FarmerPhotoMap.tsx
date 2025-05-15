@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface FarmerPhoto {
   id: number;
@@ -41,42 +41,46 @@ const farmerPhotos: FarmerPhoto[] = [
 ];
 
 const FarmerPhotoMap: React.FC = () => {
+  const [activePhotoIndex, setActivePhotoIndex] = useState<number>(0);
   const [activePhoto, setActivePhoto] = useState<FarmerPhoto | null>(null);
 
-  const handlePhotoClick = (photo: FarmerPhoto) => {
-    setActivePhoto(photo);
-  };
+  // Auto-rotate photos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActivePhotoIndex((prevIndex) => (prevIndex + 1) % farmerPhotos.length);
+    }, 5000); // Change photo every 5 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Update caption when photo changes
+    setActivePhoto(farmerPhotos[activePhotoIndex]);
+  }, [activePhotoIndex]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-cover bg-center" 
-         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')" }}>
-      {/* Interactive photo points */}
-      <div className="absolute inset-0">
-        <div className="absolute top-[25%] left-[30%] cursor-pointer" onClick={() => handlePhotoClick(farmerPhotos[0])}>
-          <div className="w-4 h-4 bg-sayur-green rounded-full animate-pulse shadow-lg relative">
-            <div className="absolute -inset-1 bg-sayur-green rounded-full opacity-50 animate-ping"></div>
+    <div className="relative w-full h-full overflow-hidden rounded-lg">
+      {/* Photo slideshow */}
+      <div className="absolute inset-0 w-full h-full">
+        {farmerPhotos.map((photo, index) => (
+          <div 
+            key={photo.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === activePhotoIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img 
+              src={photo.image} 
+              alt={photo.name} 
+              className="w-full h-full object-cover"
+            />
           </div>
-        </div>
-        <div className="absolute top-[45%] left-[60%] cursor-pointer" onClick={() => handlePhotoClick(farmerPhotos[1])}>
-          <div className="w-4 h-4 bg-sayur-green rounded-full animate-pulse shadow-lg relative">
-            <div className="absolute -inset-1 bg-sayur-green rounded-full opacity-50 animate-ping"></div>
-          </div>
-        </div>
-        <div className="absolute top-[65%] left-[20%] cursor-pointer" onClick={() => handlePhotoClick(farmerPhotos[2])}>
-          <div className="w-4 h-4 bg-sayur-green rounded-full animate-pulse shadow-lg relative">
-            <div className="absolute -inset-1 bg-sayur-green rounded-full opacity-50 animate-ping"></div>
-          </div>
-        </div>
-        <div className="absolute top-[75%] left-[70%] cursor-pointer" onClick={() => handlePhotoClick(farmerPhotos[3])}>
-          <div className="w-4 h-4 bg-sayur-green rounded-full animate-pulse shadow-lg relative">
-            <div className="absolute -inset-1 bg-sayur-green rounded-full opacity-50 animate-ping"></div>
-          </div>
-        </div>
+        ))}
       </div>
       
-      {/* Photo info overlay */}
-      {activePhoto && (
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-4 transition-all duration-300">
+      {/* Overlay caption */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-4">
+        {activePhoto && (
           <div className="bg-white/20 backdrop-blur-md p-4 rounded-lg text-white border border-white/30">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-12 h-12 rounded-full bg-cover bg-center border-2 border-white" 
@@ -87,23 +91,21 @@ const FarmerPhotoMap: React.FC = () => {
               </div>
             </div>
             <p className="text-sm">{activePhoto.description}</p>
-            <button 
-              className="mt-3 px-3 py-1 bg-sayur-green text-white rounded-md text-sm"
-              onClick={() => setActivePhoto(null)}
-            >
-              Tutup
-            </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
       
-      {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-      
-      {/* Caption */}
-      <div className="absolute bottom-4 left-4 right-4 text-white">
-        <p className="text-lg font-medium">Petani dari Kepulauan Seribu</p>
-        <p className="text-sm opacity-80">Klik titik pada peta untuk melihat detail</p>
+      {/* Photo indicator dots */}
+      <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2">
+        {farmerPhotos.map((_, index) => (
+          <div 
+            key={index} 
+            className={`w-2 h-2 rounded-full ${
+              index === activePhotoIndex ? 'bg-white' : 'bg-white/40'
+            }`}
+            onClick={() => setActivePhotoIndex(index)}
+          ></div>
+        ))}
       </div>
     </div>
   );

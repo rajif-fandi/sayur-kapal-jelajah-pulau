@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MapPin, ShoppingCart, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ProductCarousel from './ProductCarousel';
 
 export interface ProductCardProps {
   id: string;
@@ -28,13 +29,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
   badge,
   className,
 }) => {
+  // Generate multiple images for the carousel based on the main image
+  const productImages = [
+    { id: `${id}-1`, url: image, alt: name },
+    { id: `${id}-2`, url: image.replace(/\?\w+/, '?variant=1'), alt: `${name} - variant 1` },
+    { id: `${id}-3`, url: image.replace(/\?\w+/, '?variant=2'), alt: `${name} - variant 2` },
+  ];
+
   return (
     <div className={cn("bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow", className)}>
       <div className="relative h-48 overflow-hidden">
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        <ProductCarousel 
+          images={productImages} 
+          aspectRatio={4/3}
+          autoSlide={true}
+          interval={7000}
+          showControls={false}
         />
         {badge && (
           <div className="absolute top-3 left-3 bg-sayur-green text-white text-xs font-bold px-2 py-1 rounded">
@@ -52,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </Link>
         <div className="flex items-baseline mt-1 mb-3 space-x-2">
           <span className="font-bold text-lg">Rp {price.toLocaleString()}</span>
-          {originalPrice && (
+          {originalPrice && originalPrice > 0 && (
             <span className="text-sm text-gray-400 line-through">
               Rp {originalPrice.toLocaleString()}
             </span>

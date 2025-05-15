@@ -3,7 +3,32 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import ProductCard from './ProductCard';
+import ProductCarousel from './ProductCarousel';
 import { Link } from 'react-router-dom';
+
+// Featured product images for carousel
+const featuredProductImages = [
+  {
+    id: "img1",
+    url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+    alt: "Fresh organic vegetables from island farmers"
+  },
+  {
+    id: "img2",
+    url: "https://images.unsplash.com/photo-1592924357229-93d0e5552fe6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+    alt: "Fresh tomatoes from Tidung Island"
+  },
+  {
+    id: "img3",
+    url: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+    alt: "Fresh carrots from Harapan Island"
+  },
+  {
+    id: "img4",
+    url: "https://images.unsplash.com/photo-1627735483792-c59a0c4f5c9f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+    alt: "Hydroponic vegetables grown on Pramuka Island"
+  }
+];
 
 // Sample product data
 const products = [
@@ -74,6 +99,15 @@ const ProductSection = () => {
             </Button>
           </Link>
         </div>
+      </div>
+      
+      {/* Featured product carousel */}
+      <div className="mb-10 relative">
+        <ProductCarousel 
+          images={featuredProductImages} 
+          aspectRatio={16/9}
+          className="rounded-xl overflow-hidden shadow-lg"
+        />
       </div>
       
       {/* Categories */}
