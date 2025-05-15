@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -8,8 +9,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, ShoppingCart, Star, Filter, Users } from "lucide-react";
+import { Leaf, Ship } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useToast } from "@/components/ui/use-toast";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ProductCard from "@/components/ProductCard";
 
 const categories = [
@@ -25,11 +28,13 @@ const products = [
     id: 'p1',
     name: 'Bayam Organik',
     price: 15000,
-    unit: 'ikat',
+    originalPrice: 18000,
     image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80',
+    location: 'Pulau Pari',
+    weight: 'ikat',
+    badge: 'Organik',
     category: 'Sayuran Daun',
     rating: 4.8,
-    origin: 'Pulau Pari',
     stock: 150,
     description: 'Bayam organik segar yang ditanam tanpa pestisida di tanah subur Pulau Pari.'
   },
@@ -37,11 +42,13 @@ const products = [
     id: 'p2',
     name: 'Kangkung Segar',
     price: 12000,
-    unit: 'ikat',
+    originalPrice: null,
     image: 'https://images.unsplash.com/photo-1611735348880-9b5eb953de15?auto=format&fit=crop&q=80',
+    location: 'Pulau Tidung',
+    weight: 'ikat',
+    badge: null,
     category: 'Sayuran Daun',
     rating: 4.5,
-    origin: 'Pulau Tidung',
     stock: 200,
     description: 'Kangkung segar dengan batang tebal dan daun hijau yang renyah.'
   },
@@ -49,11 +56,13 @@ const products = [
     id: 'p3',
     name: 'Tomat Cherry',
     price: 25000,
-    unit: '250g',
+    originalPrice: 30000,
     image: 'https://images.unsplash.com/photo-1558818061-762508d54943?auto=format&fit=crop&q=80',
+    location: 'Pulau Pramuka',
+    weight: '250g',
+    badge: 'Promo',
     category: 'Sayuran Buah',
     rating: 4.9,
-    origin: 'Pulau Pramuka',
     stock: 80,
     description: 'Tomat cherry manis dengan tekstur renyah dan kulit tipis.'
   },
@@ -61,11 +70,13 @@ const products = [
     id: 'p4',
     name: 'Cabai Rawit',
     price: 45000,
-    unit: '500g',
+    originalPrice: null,
     image: 'https://images.unsplash.com/photo-1588495752527-77d65c21f09f?auto=format&fit=crop&q=80',
+    location: 'Pulau Harapan',
+    weight: '500g',
+    badge: null,
     category: 'Rempah-rempah',
     rating: 4.7,
-    origin: 'Pulau Harapan',
     stock: 120,
     description: 'Cabai rawit pedas dengan cita rasa khas pulau yang cocok untuk berbagai masakan.'
   },
@@ -73,11 +84,13 @@ const products = [
     id: 'p5',
     name: 'Wortel Organik',
     price: 20000,
-    unit: 'kg',
+    originalPrice: null,
     image: 'https://images.unsplash.com/photo-1447175008436-054170c2e979?auto=format&fit=crop&q=80',
+    location: 'Pulau Tidung',
+    weight: 'kg',
+    badge: 'Organik',
     category: 'Umbi-umbian',
     rating: 4.6,
-    origin: 'Pulau Tidung',
     stock: 100,
     description: 'Wortel organik segar dengan warna oranye cerah dan rasa manis alami.'
   },
@@ -85,11 +98,13 @@ const products = [
     id: 'p6',
     name: 'Sawi Hijau',
     price: 14000,
-    unit: 'ikat',
+    originalPrice: null,
     image: 'https://images.unsplash.com/photo-1574316071802-0d684efa7bf5?auto=format&fit=crop&q=80',
+    location: 'Pulau Pari',
+    weight: 'ikat',
+    badge: null,
     category: 'Sayuran Daun',
     rating: 4.4,
-    origin: 'Pulau Pari',
     stock: 180,
     description: 'Sawi hijau segar dengan daun lebar dan batang renyah, kaya akan nutrisi.'
   },
@@ -97,11 +112,13 @@ const products = [
     id: 'p7',
     name: 'Terong Ungu',
     price: 18000,
-    unit: 'kg',
+    originalPrice: 22000,
     image: 'https://images.unsplash.com/photo-1605196560547-b2f7281b7fb5?auto=format&fit=crop&q=80',
+    location: 'Pulau Pramuka',
+    weight: 'kg',
+    badge: 'Promo',
     category: 'Sayuran Buah',
     rating: 4.3,
-    origin: 'Pulau Pramuka',
     stock: 90,
     description: 'Terong ungu segar dengan kulit mengkilap dan daging yang lembut.'
   },
@@ -109,11 +126,13 @@ const products = [
     id: 'p8',
     name: 'Bawang Merah',
     price: 35000,
-    unit: 'kg',
+    originalPrice: null,
     image: 'https://images.unsplash.com/photo-1628689469838-524a4a973b8e?auto=format&fit=crop&q=80',
+    location: 'Pulau Harapan',
+    weight: 'kg',
+    badge: null,
     category: 'Rempah-rempah',
     rating: 4.7,
-    origin: 'Pulau Harapan',
     stock: 150,
     description: 'Bawang merah kecil dengan aroma tajam dan rasa khas, hasil panen terbaik.'
   }
@@ -259,7 +278,18 @@ const ProductPage = () => {
               {sortedProducts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {sortedProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard 
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      price={product.price}
+                      originalPrice={product.originalPrice || undefined}
+                      image={product.image}
+                      location={product.location}
+                      weight={product.weight}
+                      badge={product.badge || undefined}
+                      className=""
+                    />
                   ))}
                 </div>
               ) : (

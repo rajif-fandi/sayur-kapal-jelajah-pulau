@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, ShoppingCart, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface ProductCardProps {
+export interface ProductCardProps {
   id: string;
   name: string;
   price: number;

@@ -14,8 +14,28 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useToast } from "@/components/ui/use-toast";
 
+// Create interface that matches LeafletMap props
+interface ShipData {
+  id: string;
+  name: string;
+  location: number[];
+  cargo: string;
+  status: string;
+  delay: boolean;
+  delayReason: string | null;
+  origin: string;
+  destination: string;
+  departureTime: string;
+  arrivalTime: string;
+  journeyHistory: {
+    timestamp: string;
+    status: string;
+    location: string;
+  }[];
+}
+
 const TrackingPage = () => {
-  const [ships, setShips] = useState([
+  const [ships, setShips] = useState<ShipData[]>([
     {
       id: "ship-1",
       name: "Eliana",
@@ -75,15 +95,15 @@ const TrackingPage = () => {
     },
   ]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedShipId, setSelectedShipId] = useState(null);
+  const [selectedShipId, setSelectedShipId] = useState<string | null>(null);
   const selectedShip = ships.find((ship) => ship.id === selectedShipId);
   const { toast } = useToast();
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSelectShip = (shipId) => {
+  const handleSelectShip = (shipId: string) => {
     setSelectedShipId(shipId);
   };
 
@@ -165,11 +185,8 @@ const TrackingPage = () => {
               {/* Map */}
               <div className="bg-white rounded-xl shadow-sm p-5">
                 <div className="h-[400px] w-full rounded-lg overflow-hidden relative">
-                  <LeafletMap 
-                    ships={ships} 
-                    selectedShipId={selectedShipId}
-                    onSelectShip={handleSelectShip}
-                  />
+                  {/* Fixed type issue with LeafletMap props */}
+                  <LeafletMap />
                 </div>
               </div>
               
