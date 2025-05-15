@@ -10,6 +10,9 @@ import ProductPage from "./pages/Product";
 import TrackingPage from "./pages/Tracking";
 import StoriesPage from "./pages/Stories";
 import AboutPage from "./pages/About";
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
+import CartPage from "./pages/Cart";
 
 const queryClient = new QueryClient();
 
@@ -25,9 +28,9 @@ const App = () => (
           <Route path="/pelacakan" element={<TrackingPage />} />
           <Route path="/cerita" element={<StoriesPage />} />
           <Route path="/tentang" element={<AboutPage />} />
-          <Route path="/keranjang" element={<NotFound />} />
-          <Route path="/masuk" element={<NotFound />} />
-          <Route path="/daftar" element={<NotFound />} />
+          <Route path="/masuk" element={<LoginPage />} />
+          <Route path="/daftar" element={<RegisterPage />} />
+          <Route path="/keranjang" element={<CartPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
