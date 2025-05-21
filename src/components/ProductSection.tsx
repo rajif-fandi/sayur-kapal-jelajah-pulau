@@ -5,14 +5,14 @@ import { ArrowRight } from 'lucide-react';
 import ProductCard from './ProductCard';
 import { Link } from 'react-router-dom';
 
-// Sample product data with updated images
+// Sample product data with updated and working images
 const products = [
   {
     id: 'p1',
     name: 'Bayam Organik',
     price: 15000,
     originalPrice: 18000,
-    image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1550505095-57274d6e4a3c?auto=format&fit=crop&w=600&q=80',
     location: 'Pulau Pari',
     weight: '250g',
     badge: 'Organik'
@@ -22,7 +22,7 @@ const products = [
     name: 'Tomat Segar',
     price: 12000,
     originalPrice: 0,
-    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?auto=format&fit=crop&w=600&q=80',
     location: 'Pulau Tidung',
     weight: '500g',
     badge: ''
@@ -32,7 +32,7 @@ const products = [
     name: 'Wortel Lokal',
     price: 9000,
     originalPrice: 0,
-    image: 'https://images.unsplash.com/photo-1447175008436-054170c2e979?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1598170845053-a6b58c14f86b?auto=format&fit=crop&w=600&q=80',
     location: 'Pulau Harapan',
     weight: '500g',
     badge: ''
@@ -42,7 +42,7 @@ const products = [
     name: 'Kangkung Hidroponik',
     price: 8000,
     originalPrice: 10000,
-    image: 'https://images.unsplash.com/photo-1604575590348-7862fd835427?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1574316071802-0d684efa7bf5?auto=format&fit=crop&w=600&q=80',
     location: 'Pulau Pramuka',
     weight: '200g',
     badge: 'Hidroponik'
