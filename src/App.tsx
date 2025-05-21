@@ -13,6 +13,7 @@ import AboutPage from "./pages/About";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import CartPage from "./pages/Cart";
+import FarmerStoryDetail from "./pages/FarmerStoryDetail";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/produk" element={<ProductPage />} />
           <Route path="/pelacakan" element={<TrackingPage />} />
           <Route path="/cerita" element={<StoriesPage />} />
+          <Route path="/cerita/:id" element={<FarmerStoryDetail />} />
           <Route path="/tentang" element={<AboutPage />} />
           <Route path="/masuk" element={<LoginPage />} />
           <Route path="/daftar" element={<RegisterPage />} />
