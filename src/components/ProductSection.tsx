@@ -42,7 +42,7 @@ const products = [
     name: 'Kangkung Hidroponik',
     price: 8000,
     originalPrice: 10000,
-    image: 'https://images.unsplash.com/photo-1604575590348-7862fd835427?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1662318183265-5bbe6578d1b0?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     location: 'Pulau Pramuka',
     weight: '200g',
     badge: 'Hidroponik'

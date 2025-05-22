@@ -21,21 +21,21 @@ const farmerPhotos: FarmerPhoto[] = [
     id: 2,
     name: "Bu Siti",
     location: "Pulau Tidung",
-    image: "https://images.unsplash.com/photo-1466721591366-2d5fba72006d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "https://media.istockphoto.com/id/1480775375/id/foto/wanita-cantik-memanen-cabai-di-kebun-halaman-belakang.jpg?s=170667a&w=0&k=20&c=Y7AWhs2pvfPk7iyCEOkRLRfn3eq102eUHJov1IpbJmM=",
     description: "Petani tomat dan cabai"
   },
   {
     id: 3,
     name: "Pak Budi",
     location: "Pulau Harapan",
-    image: "https://images.unsplash.com/photo-1493962853295-0fd70327578a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "https://www.happysprout.com/wp-content/uploads/sites/4/2021/06/carrot-harvesting.jpg?fit=1024%2C1024&p=1",
     description: "Petani wortel dan sawi"
   },
   {
     id: 4,
     name: "Bu Ani",
     location: "Pulau Tidung",
-    image: "https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "https://moneter.id/uploads/e1d119d6bb3d7abd39587c529dbc941c.jpeg",
     description: "Petani sayuran organik"
   }
 ];
